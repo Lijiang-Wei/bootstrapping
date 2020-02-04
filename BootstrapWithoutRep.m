@@ -1,11 +1,10 @@
-function [BootSample_pos,BootSample_neg,BootSample_pn]=BootstrapWithoutRep(NB,no_train,train_vcts,train_behav,thresh,BootPer)
+function [BootSample_pos,BootSample_neg,BootSample_pn]=BootstrapWithoutRep(NB,train_vcts,train_behav,thresh,BootPer)
 
 % This function performs bootstrapping without replacement as feature selection.
 
 % Input
 
 % 'NB'                time of resampling
-% 'no_train'          number of training subjects
 % 'train_vcts'        trainning data in a matrix of size (number of features, number of training subjects)
 % 'train_behav'       behaviral data in a vector of size (number of training subjects, 1)
 % 'thresh'            P threshold of correlation test
@@ -30,7 +29,9 @@ idx_pn=cell(1,NB);
 
 % sample from original dataset
 
+no_train=length(train_behav);
 rng('shuffle')
+
 parfor nboot=1:NB
 
     % implement on one subset
