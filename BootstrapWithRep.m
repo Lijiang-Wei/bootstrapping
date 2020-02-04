@@ -1,4 +1,4 @@
-function [BootSample_pos,BootSample_neg,BootSample_pn]=BootstrapWithRep(NB,no_train,train_vcts,train_behav,thresh)
+function [BootSample_pos,BootSample_neg,BootSample_pn]=BootstrapWithRep(NB,train_vcts,train_behav,thresh)
 
 % This function performs bootstrapping with replacement as feature selection.
 
@@ -29,7 +29,9 @@ idx_pn=cell(1,NB);
 
 % sample from original dataset
 
+no_train=length(train_behav);
 rng('shuffle')
+
 parfor nboot=1:NB
 
     % implement on one subset
