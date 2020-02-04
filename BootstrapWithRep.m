@@ -38,7 +38,7 @@ parfor nboot=1:NB
     sub_train_x=train_vcts(:,subject_Index);
     sub_train_y=train_behav(subject_Index);
     
-    % correlate all features with behavior
+    % correlate all features with behavioral measure
     
     [RHO,PVAL]=corr(sub_train_x',sub_train_y,'type','Spearman');
     
