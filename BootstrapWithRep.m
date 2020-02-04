@@ -1,47 +1,59 @@
-function [feature_pos,feature_neg,feature_pn]=BootstrapWithRep(no_node,NB,no_train,train_mats,train_behav,P_threshold)
+function [BootSample_pos,BootSample_neg,BootSample_pn]=BootstrapWithRep(no_node,NB,no_train,train_vcts,train_behav,thresh)
+
+% This function performs bootstrapping with replacement as feature selection on functional connectivities.
+
+% Input
+
+% 'no_node'           number of nodes (or ROIs)
+% 'NB'                time of resampling
+% 'no_train'          number of training subjects
+% 'train_vcts'        trainning data in a matrix of size (number of features, number of training subjects)
+% 'train_behav'       behaviral data in a vector of size (number of training subjects, 1)
+% 'thresh'            P threshold of correlation test
+
+% Output
+
+% 'BootSample_pos'    number of time each feature is selected as posivitively correlated feature
+% 'BootSample_neg'    number of time each feature is selected as negatively correlated feature
+% 'BootSample_pn'     number of time each feature is selected as correlated feature
+
 
 % initialization
 
-sum_pos=zeros(no_node,no_node);
-sum_neg=zeros(no_node,no_node);
-sum_pn=zeros(no_node,no_node);
+BootSample_pos=zeros(no_node,no_node);
+BootSample_neg=zeros(no_node,no_node);
+BootSample_pn=zeros(no_node,no_node);
 
-index_pos=cell(1,NB);
-index_neg=cell(1,NB);
-index_pn=cell(1,NB);
+idx_pos=cell(1,NB);
+idx_neg=cell(1,NB);
+idx_pn=cell(1,NB);
 
 % sample from original dataset
 
 rng('shuffle')
-[~,NewSample] = bootstrp(NB,[],[1:no_train]);
+parfor nboot=1:NB
 
-parfor nboot=1:NB 
-    
     % implement on one subset
     
-    subject_Index=NewSample(:,nboot);
-    sub_train_vcts=train_mats(:,subject_Index);
-    sub_train_behav=train_behav(subject_Index);
+    subject_Index=randsample(no_train,no_train,true);
+    sub_train_x=train_vcts(:,subject_Index);
+    sub_train_y=train_behav(subject_Index);
     
     % correlate all features with behavior
     
-    [r_vcts,p_vcts]=corr(sub_train_vcts',sub_train_behav,'type','Spearman');
+    [RHO,PVAL]=corr(sub_train_x',sub_train_y,'type','Spearman');
     
-    index_pos{nboot}=find(p_vcts<P_threshold & r_vcts>=0);
-    index_neg{nboot}=find(p_vcts<P_threshold & r_vcts<0);
-    index_pn{nboot}=find(p_vcts<P_threshold);
-    
+    idx_pos{nboot}=find(PVAL<thresh & RHO>0);
+    idx_neg{nboot}=find(PVAL<thresh & RHO<0);
+    idx_pn{nboot}=find(PVAL<thresh);
 end
+
 % counting
+
 for nboot2=1:NB
-    sum_pos(index_pos{nboot2})=sum_pos(index_pos{nboot2})+1;
-    sum_neg(index_neg{nboot2})=sum_neg(index_neg{nboot2})+1;
-    sum_pn(index_pn{nboot2})=sum_pn(index_pn{nboot2})+1;
+    BootSample_pos(idx_pos{nboot2})=BootSample_pos(idx_pos{nboot2})+1;
+    BootSample_neg(idx_neg{nboot2})=BootSample_neg(idx_neg{nboot2})+1;
+    BootSample_pn(idx_pn{nboot2})=BootSample_pn(idx_pn{nboot2})+1;
 end
 
-% select stable features with frequency more than FP
-
-feature_pos=find(sum_pos>=FP*NB);
-feature_neg=find(sum_neg>=FP*NB);
-feature_pn=find(sum_pn>=FP*NB);
 end
