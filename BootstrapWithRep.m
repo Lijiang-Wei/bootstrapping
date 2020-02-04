@@ -1,6 +1,6 @@
 function [BootSample_pos,BootSample_neg,BootSample_pn]=BootstrapWithRep(no_node,NB,no_train,train_vcts,train_behav,thresh)
 
-% This function performs bootstrapping with replacement as feature selection on functional connectivities.
+% This function performs bootstrapping with replacement as feature selection.
 
 % Input
 
@@ -20,9 +20,12 @@ function [BootSample_pos,BootSample_neg,BootSample_pn]=BootstrapWithRep(no_node,
 
 % initialization
 
-BootSample_pos=zeros(no_node,no_node);
-BootSample_neg=zeros(no_node,no_node);
-BootSample_pn=zeros(no_node,no_node);
+% BootSample_pos=zeros(no_node,no_node);
+% BootSample_neg=zeros(no_node,no_node);
+% BootSample_pn=zeros(no_node,no_node);
+BootSample_pos=zeros(size(train_vcts,1),1);
+BootSample_neg=zeros(size(train_vcts,1),1);
+BootSample_pn=zeros(size(train_vcts,1),1);
 
 idx_pos=cell(1,NB);
 idx_neg=cell(1,NB);
