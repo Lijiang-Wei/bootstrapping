@@ -5,7 +5,6 @@ function [BootSample_pos,BootSample_neg,BootSample_pn]=BootstrapWithRep(NB,train
 % Input
 
 % 'NB'                time of resampling
-% 'no_train'          number of training subjects
 % 'train_vcts'        trainning data in a matrix of size (number of features, number of training subjects)
 % 'train_behav'       behaviral data in a vector of size (number of training subjects, 1)
 % 'thresh'            P threshold of correlation test
