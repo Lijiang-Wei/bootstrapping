@@ -1,10 +1,9 @@
-function [BootSample_pos,BootSample_neg,BootSample_pn]=BootstrapWithoutRep(no_node,NB,no_train,train_vcts,train_behav,thresh,BootPer)
+function [BootSample_pos,BootSample_neg,BootSample_pn]=BootstrapWithoutRep(NB,no_train,train_vcts,train_behav,thresh,BootPer)
 
-% This function performs bootstrapping without replacement as feature selection on functional connectivities.
+% This function performs bootstrapping without replacement as feature selection.
 
 % Input
 
-% 'no_node'           number of nodes (or ROIs)
 % 'NB'                time of resampling
 % 'no_train'          number of training subjects
 % 'train_vcts'        trainning data in a matrix of size (number of features, number of training subjects)
@@ -21,9 +20,9 @@ function [BootSample_pos,BootSample_neg,BootSample_pn]=BootstrapWithoutRep(no_no
 
 % initialization
 
-BootSample_pos=zeros(no_node,no_node);
-BootSample_neg=zeros(no_node,no_node);
-BootSample_pn=zeros(no_node,no_node);
+BootSample_pos=zeros(size(train_vcts,1),1);
+BootSample_neg=zeros(size(train_vcts,1),1);
+BootSample_pn=zeros(size(train_vcts,1),1);
 
 idx_pos=cell(1,NB);
 idx_neg=cell(1,NB);
