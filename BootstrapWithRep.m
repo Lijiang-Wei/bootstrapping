@@ -1,10 +1,9 @@
-function [BootSample_pos,BootSample_neg,BootSample_pn]=BootstrapWithRep(no_node,NB,no_train,train_vcts,train_behav,thresh)
+function [BootSample_pos,BootSample_neg,BootSample_pn]=BootstrapWithRep(NB,no_train,train_vcts,train_behav,thresh)
 
 % This function performs bootstrapping with replacement as feature selection.
 
 % Input
 
-% 'no_node'           number of nodes (or ROIs)
 % 'NB'                time of resampling
 % 'no_train'          number of training subjects
 % 'train_vcts'        trainning data in a matrix of size (number of features, number of training subjects)
@@ -20,9 +19,6 @@ function [BootSample_pos,BootSample_neg,BootSample_pn]=BootstrapWithRep(no_node,
 
 % initialization
 
-% BootSample_pos=zeros(no_node,no_node);
-% BootSample_neg=zeros(no_node,no_node);
-% BootSample_pn=zeros(no_node,no_node);
 BootSample_pos=zeros(size(train_vcts,1),1);
 BootSample_neg=zeros(size(train_vcts,1),1);
 BootSample_pn=zeros(size(train_vcts,1),1);
